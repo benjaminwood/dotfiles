@@ -13,6 +13,12 @@ wget https://thoughtbot.com/thoughtbot.asc && \
 sudo apt-get update
 sudo apt-get install -yq rcm
 
+# Install fzf from source
+git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
+  ~/.fzf/install --all
+
+rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
+
 # Build tmux from source
 TMUX_VERSION=3.2a && \
   wget https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz && \
@@ -30,13 +36,7 @@ TMUX_VERSION=3.2a && \
 # ENV HISTFILE=/history/.zsh_history
 # RUN mkdir -p /history && chown $USER:$USER /history
 
-# Install fzf from source
-git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
-  ~/.fzf/install --all
-
 # Install oh-my-zsh
 # sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
 
 gem install solargraph
