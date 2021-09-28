@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
+echo "install.sh ran at $(date) from $(SCRIPT_DIR)" >> ~/install.log
+
 # Add source for RCM
 wget https://thoughtbot.com/thoughtbot.asc && \
   sudo apt-key add - < thoughtbot.asc && \
@@ -26,11 +30,6 @@ TMUX_VERSION=3.2a && \
 # ENV HISTFILE=/history/.zsh_history
 # RUN mkdir -p /history && chown $USER:$USER /history
 
-# USER $USER
-
-# Set default shell to ZSH
-# ENV SHELL=/bin/zsh
-
 # Install fzf from source
 git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
@@ -38,6 +37,6 @@ git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf &
 # Install oh-my-zsh
 # sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-rcup -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
+rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
 
-# gem install solargraph
+gem install solargraph
