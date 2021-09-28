@@ -1,0 +1,4 @@
+.devcontainer/
+results/
+coverage-keep
+config/definitions.rb

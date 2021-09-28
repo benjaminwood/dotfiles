@@ -1,0 +1,6 @@
+[user]
+	name = Benjamin Wood
+	email = benjaminwood@gmail.com
+[core]
+	editor = code --wait
+	excludesfile = ~/.gitignore

@@ -1,0 +1,46 @@
+general {
+	colors = true
+	interval = 1
+	output_format = i3bar
+	color_good = "#2267a5"
+	color_degraded = "#8c7f22"
+	color_bad = "#be2422"
+}
+
+order += "disk /"
+order += "wireless wlp2s0"
+# order += "ethernet enp9s0"
+order += "battery 0"
+order += "volume master"
+order += "tztime local"
+
+wireless wlp2s0 {
+	format_up = " WiFi: %essid (%quality) "
+	format_down = " WiFi: (/) "
+}
+
+ethernet enp9s0 {
+	format_up = " LAN: %ip %speed "
+	format_down = " LAN: (/) "
+}
+
+# battery 0 {
+# 	format = " Power: %status %percentage"
+#   integer_battery_capacity = true
+# 	low_threshold = 20
+# }
+
+tztime local {
+	format = " Date: %m/%d/%y  Time: %-I:%M %p"
+}
+
+disk "/" {
+	format = " Disk: %free "
+}
+
+volume master {
+	format = " Vol: %volume "
+	device = "default"
+	mixer = "Master"
+	mixer_idx = 0
+}
