@@ -17,8 +17,6 @@ sudo apt-get install -yq rcm zsh
 git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
 
-rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
-
 # Build tmux from source
 TMUX_VERSION=3.2a && \
   wget https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz && \
@@ -38,5 +36,7 @@ TMUX_VERSION=3.2a && \
 
 # Install oh-my-zsh
 [ ! -d "~/.oh-my-zsh" ] && sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
+
+rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
 
 gem install solargraph
