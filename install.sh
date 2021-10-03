@@ -14,7 +14,7 @@ wget https://thoughtbot.com/thoughtbot.asc && \
 echo "Installing apt things" >> ~/install.log
 # Install RCM
 sudo apt-get update
-sudo apt-get install -yq rcm zsh
+sudo apt-get install -o Dpkg::Options::="--force-confold" -yq rcm zsh
 
 echo "Installing fzf" >> ~/install.log
 # Install fzf from source
