@@ -2,6 +2,8 @@
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
+export DEBIAN_FRONTEND=noninteractive
+
 echo "install.sh ran at $(date) from $(SCRIPT_DIR)" >> ~/install.log
 
 # Add source for RCM
