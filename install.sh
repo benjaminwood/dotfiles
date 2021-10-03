@@ -37,6 +37,6 @@ TMUX_VERSION=3.2a && \
 # RUN mkdir -p /history && chown $USER:$USER /history
 
 # Install oh-my-zsh
-# sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+[ ! -d "~/.oh-my-zsh" ] && sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
 
 gem install solargraph
