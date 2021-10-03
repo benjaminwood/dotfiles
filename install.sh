@@ -11,7 +11,7 @@ wget https://thoughtbot.com/thoughtbot.asc && \
 
 # Install RCM
 sudo apt-get update
-sudo apt-get install -yq rcm
+sudo apt-get install -yq rcm zsh
 
 # Install fzf from source
 git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
