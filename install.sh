@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -f "/home/$USER/install.log" ] && { echo >&2 "Dotfiles have already installed. Exiting!"; exit 1; }
+exit 1
 
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
