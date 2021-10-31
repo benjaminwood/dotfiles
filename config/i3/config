@@ -84,7 +84,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym $mod+Shift+space exec ~/bin/toggle-floating.sh
 
 # change focus between tiling / floating windows
 # bindsym $mod+space focus mode_toggle
@@ -202,6 +202,8 @@ for_window [class="Peek"] floating enable
 for_window [class="zoom"] border normal
 for_window [class="Ulauncher"] border pixel 0
 for_window [class="Slack"] border pixel 0
+for_window [class="Timeular"] floating enable
+for_window [class="Timeular"] border normal
 
 # Open notes
 bindsym $mod+Shift+n exec --no-startup-id code ~/Dropbox/Documents/notes
