@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+echo "user_install.sh ran at $(date) from $SCRIPT_DIR" >> $SCRIPT_DIR/install.log
+
 # Add source for RCM
 wget https://thoughtbot.com/thoughtbot.asc && \
   sudo apt-key add - < thoughtbot.asc && \
