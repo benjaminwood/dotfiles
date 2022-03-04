@@ -197,6 +197,7 @@ for_window [class="^.*"] border pixel 2
 
 # App specific config
 for_window [class="Nautilus"] floating enable
+for_window [class="Pop"] floating enable
 for_window [class="zoom"] floating enable
 for_window [class="Peek"] floating enable
 for_window [class="zoom"] border normal

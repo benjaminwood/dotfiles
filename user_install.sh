@@ -12,6 +12,9 @@ echo "Installing oh my zsh if it does not exist" >> ~/install.log
 
 # Install oh-my-zsh
 sh -c "$(wget -O- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended
+# Install Powerlevel10k theme
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+
 
 echo "Installing dotfiles with rcup" >> ~/install.log
 
