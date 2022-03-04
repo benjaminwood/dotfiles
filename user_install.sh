@@ -18,7 +18,7 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 echo "Installing dotfiles with rcup" >> ~/install.log
 
-rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore
+rcup -d $SCRIPT_DIR -f -B docker vscode_shell tmux.conf zshrc gitconfig gitignore p10k.zsh
 
 echo "Installing solargraph" >> ~/install.log
 gem install solargraph
