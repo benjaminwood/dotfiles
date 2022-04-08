@@ -1,5 +1,11 @@
 #!/bin/bash
 
+sudo ()
+{
+    [[ $EUID = 0 ]] || set -- command sudo "$@"
+    "$@"
+}
+
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 [ -f "$SCRIPT_DIR/install.log" ] && { echo >&2 "Dotfiles have already installed. Exiting!"; exit 1; }
