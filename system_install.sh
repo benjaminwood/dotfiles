@@ -20,7 +20,7 @@ if [ `which apt` ]; then
 
   # Install RCM
   sudo apt-get update
-  sudo apt-get install -o Dpkg::Options::="--force-confold" -yq rcm netcat zsh
+  sudo apt-get install -o Dpkg::Options::="--force-confold" -yq rcm netcat zsh iproute2
 
   # Install Kubectl
   curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
