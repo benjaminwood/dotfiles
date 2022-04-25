@@ -48,7 +48,7 @@ if [ `which apt` ]; then
     sudo rm -rf /usr/local/src/tmux-\* && \
     sudo mv tmux-$TMUX_VERSION /usr/local/src
 elif [ `which apk` ]; then
-   apk add tmux rcm zsh
+   apk add tmux rcm zsh iproute2
 else
    echo "UNKNOWN LINUX DISTRO"
    exit 1
