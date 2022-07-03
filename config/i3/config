@@ -207,7 +207,7 @@ for_window [class="Timeular"] floating enable
 for_window [class="Timeular"] border normal
 
 # Open notes
-bindsym $mod+Shift+n exec --no-startup-id code ~/Dropbox/Documents/notes
+bindsym $mod+Shift+n exec --no-startup-id code ~/projects/benjaminwood/notes
 
 # Screenshots with scrot
 #bindsym --release $mod+p exec --no-startup-id "scrot -s /tmp/screenshot-$(date +%F_%T).png -e 'xclip -selection c -t image/png < $f'"
