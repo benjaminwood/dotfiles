@@ -34,19 +34,6 @@ if [ `which apt` ]; then
   sudo ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
   sudo ln -s /opt/kubectx/kubens /usr/local/bin/kubens
 
-  echo "Installing tmux from source" >> $SCRIPT_DIR/install.log
-  # Build tmux from source
-  TMUX_VERSION=3.2a && \
-    wget https://github.com/tmux/tmux/releases/download/$TMUX_VERSION/tmux-$TMUX_VERSION.tar.gz && \
-    tar xf tmux-$TMUX_VERSION.tar.gz && \
-    rm -f tmux-$TMUX_VERSION.tar.gz && \
-    cd tmux-$TMUX_VERSION && \
-    ./configure && \
-    make && \
-    sudo make install && \
-    cd - && \
-    sudo rm -rf /usr/local/src/tmux-\* && \
-    sudo mv tmux-$TMUX_VERSION /usr/local/src
 elif [ `which apk` ]; then
    apk add tmux rcm zsh iproute2
 else

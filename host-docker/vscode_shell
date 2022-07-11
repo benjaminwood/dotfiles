@@ -1,9 +1,0 @@
-#!/bin/zsh
-
-unset BUNDLE_PATH
-
-export SHELL=/bin/zsh
-
-tmux new-session -A -D -s primary
-tmux list-windows -t primary  | cut -d: -f1|xargs -I{} tmux send-keys -t $session:{} ENTER "export VSCODE_IPC_HOOK_CLI=`ls -tr /tmp/vscode-ipc-* | tail -n 1`" ENTER
-return 0

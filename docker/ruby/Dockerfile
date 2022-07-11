@@ -25,8 +25,6 @@ RUN sudo cp /home/$USER/dotfiles/docker/ruby/entrypoint.sh /usr/local/share/entr
 RUN sudo /home/$USER/dotfiles/system_install.sh
 RUN /home/$USER/dotfiles/user_install.sh
 
-ENV SHELL=/home/$USER/.vscode_shell
-
 RUN sudo apt-get clean -y && sudo rm -rf /var/lib/apt/lists/*
 
 ENTRYPOINT ["/usr/local/share/entrypoint.sh"]
