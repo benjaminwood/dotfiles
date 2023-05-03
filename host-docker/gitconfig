@@ -4,3 +4,5 @@
 [core]
 	editor = code --wait
 	excludesfile = ~/.gitignore
+[pull]
+        rebase = false
