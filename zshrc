@@ -159,7 +159,7 @@ inith() {
   echo >> ~/.zshrc
   echo "export ATUIN_HOST_NAME=$host" >> ~/.zshrc
   echo "export ATUIN_HOST_USER=ben" >> ~/.zshrc
-  echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
+  echo 'eval "$(atuin init zsh --disable-up-arrow)"' >> ~/.zshrc
 
   atuin logout > /dev/null 2>&1
   atuin login -u ben -p "$password" -k "$key"
