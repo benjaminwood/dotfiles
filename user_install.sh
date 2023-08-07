@@ -8,6 +8,9 @@ echo "Installing fzf" >> $SCRIPT_DIR/install.log
 git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
 
+echo "Installing atuin" >> $SCRIPT_DIR/install.log
+bash <(curl https://setup.atuin.sh)
+
 echo "Installing oh my zsh if it does not exist" >> $SCRIPT_DIR/install.log
 
 # Install oh-my-zsh
@@ -17,7 +20,5 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 echo "Installing dotfiles with rcup" >> $SCRIPT_DIR/install.log
 
-rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh
-
-echo "Installing solargraph" >> $SCRIPT_DIR/install.log
-gem install solargraph
+sed -i "s/<ATUIN_SYNC_SERVER>/$(ip route | awk 'NR==1 {print $3}')/g" host-docker/config/atuin/config.toml
+rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml

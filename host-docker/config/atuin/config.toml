@@ -1,0 +1,2 @@
+sync_address = "http://<ATUIN_SYNC_SERVER>:8888"
+filter_mode = "host"

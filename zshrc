@@ -144,3 +144,25 @@ alias disablehistory="function zshaddhistory() {  return 1 }"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+inith() {
+  if [ $# -ne 3 ]; then
+    echo "Usage: inith <password> <key> <host>"
+    return 1
+  fi
+
+  local password="$1"
+  local key="$2"
+  local host="$3"
+
+  echo >> ~/.zshrc
+  echo >> ~/.zshrc
+  echo "export ATUIN_HOST_NAME=$host" >> ~/.zshrc
+  echo "export ATUIN_HOST_USER=ben" >> ~/.zshrc
+  echo 'eval "$(atuin init zsh)"' >> ~/.zshrc
+
+  atuin logout > /dev/null 2>&1
+  atuin login -u ben -p "$password" -k "$key"
+
+  source ~/.zshrc
+}
