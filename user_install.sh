@@ -20,5 +20,5 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 echo "Installing dotfiles with rcup" >> $SCRIPT_DIR/install.log
 
-sed -i "s/<ATUIN_SYNC_SERVER>/$(ip route | awk 'NR==1 {print $3}')/g" host-docker/config/atuin/config.toml
-rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml
+# sed -i "s/<ATUIN_SYNC_SERVER>/$(ip route | awk 'NR==1 {print $3}')/g" host-docker/config/atuin/config.toml
+# rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml
