@@ -166,3 +166,7 @@ inith() {
 
   source ~/.zshrc
 }
+
+selective() {
+  SELECTIVE_RUN_ID=$(echo $RANDOM) bundle exec selective rspec "$@"
+}
