@@ -168,5 +168,5 @@ inith() {
 }
 
 selective() {
-  SELECTIVE_RUN_ID=$(echo $RANDOM) bundle exec selective rspec "$@"
+  SELECTIVE_RUN_ID=$(echo $(date +%s)) bundle exec selective rspec "$@"
 }
