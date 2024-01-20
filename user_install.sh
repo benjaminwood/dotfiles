@@ -9,7 +9,9 @@ git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf &
   ~/.fzf/install --all
 
 # echo "Installing atuin" >> $SCRIPT_DIR/install.log
-# bash <(curl https://setup.atuin.sh)
+if [ `which apt` ]; then
+  bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+fi
 
 echo "Installing oh my zsh if it does not exist" >> $SCRIPT_DIR/install.log
 
