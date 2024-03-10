@@ -35,5 +35,11 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$
 
 echo "Installing dotfiles with rcup" >> $SCRIPT_DIR/install.log
 
-sed -i "s/<ATUIN_SYNC_SERVER>/$(ip route | awk 'NR==1 {print $3}')/g" host-docker/config/atuin/config.toml
+if nc -vz host.docker.internal 8888 > /dev/null 2>&1; then
+  ATUIN_HOST="host.docker.internal"
+else
+  ATUIN_HOST=$(ip route | awk 'NR==1 {print $3}')
+fi
+
+sed -i "s/<ATUIN_SYNC_SERVER>/$ATUIN_HOST/g" host-docker/config/atuin/config.toml
 rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml
