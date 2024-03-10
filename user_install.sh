@@ -8,9 +8,22 @@ echo "Installing fzf" >> $SCRIPT_DIR/install.log
 git clone --depth 1 --branch 0.20.0 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
 
-# echo "Installing atuin" >> $SCRIPT_DIR/install.log
-if [ `which apt` ]; then
-  bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+echo "Installing atuin" >> $SCRIPT_DIR/install.log
+ARCH=$(uname -m)
+if [ "$ARCH" = "aarch64" ]; then
+  echo "Detected aarch64 architecture, installing Atuin from binary" >> $SCRIPT_DIR/install.log
+  LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/atuinsh/atuin/releases/latest)
+  LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
+  ATUIN_BINARY_URL="https://github.com/atuinsh/atuin/releases/download/${LATEST_VERSION}/atuin-${LATEST_VERSION}-aarch64-unknown-linux-gnu.tar.gz"
+  
+  # Download and extract Atuin binary
+  curl -L $ATUIN_BINARY_URL | sudo tar xz -C /tmp
+  # Move the Atuin binary to /usr/local/bin
+  sudo mv "/tmp/atuin-${LATEST_VERSION}-aarch64-unknown-linux-gnu/atuin" /usr/local/bin/
+else
+  if [ `which apt` ]; then
+    bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+  fi
 fi
 
 echo "Installing oh my zsh if it does not exist" >> $SCRIPT_DIR/install.log
