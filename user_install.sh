@@ -39,6 +39,10 @@ if ! command -v claude &> /dev/null; then
   sudo ln -sf $HOME/.local/bin/claude /usr/local/bin/claude
 fi
 
+echo "Installing TPM" >> $SCRIPT_DIR/install.log
+git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+~/.tmux/plugins/tpm/bin/install_plugins
+
 echo "Setting default shell to zsh" >> $SCRIPT_DIR/install.log
 sudo chsh -s /bin/zsh $(whoami)
 
