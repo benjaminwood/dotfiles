@@ -33,6 +33,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 # Install Powerlevel10k theme
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
+echo "Installing Claude Code" >> $SCRIPT_DIR/install.log
+if ! command -v claude &> /dev/null; then
+  curl -fsSL https://claude.ai/install.sh | bash
+  sudo ln -sf $HOME/.local/bin/claude /usr/local/bin/claude
+fi
+
 echo "Installing dotfiles with rcup" >> $SCRIPT_DIR/install.log
 
 if nc -vz host.docker.internal 8888 > /dev/null 2>&1; then
@@ -42,4 +48,4 @@ else
 fi
 
 sed -i "s/<ATUIN_SYNC_SERVER>/$ATUIN_HOST/g" host-docker/config/atuin/config.toml
-rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml tmux.conf
+rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml tmux.conf claude/settings.json claude/mcp.json
