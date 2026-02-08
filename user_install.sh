@@ -54,7 +54,7 @@ else
 fi
 
 sed -i "s/<ATUIN_SYNC_SERVER>/$ATUIN_HOST/g" host-docker/config/atuin/config.toml
-rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml tmux.conf claude/settings.json claude/mcp.json claude.json
+rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml tmux.conf claude/settings.json claude.json
 
 echo "Installing TPM plugins" >> $SCRIPT_DIR/install.log
 ~/.tmux/plugins/tpm/bin/install_plugins
