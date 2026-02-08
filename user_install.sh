@@ -39,6 +39,9 @@ if ! command -v claude &> /dev/null; then
   sudo ln -sf $HOME/.local/bin/claude /usr/local/bin/claude
 fi
 
+echo "Setting default shell to zsh" >> $SCRIPT_DIR/install.log
+sudo chsh -s /bin/zsh $(whoami)
+
 echo "Installing dotfiles with rcup" >> $SCRIPT_DIR/install.log
 
 if nc -vz host.docker.internal 8888 > /dev/null 2>&1; then
