@@ -41,7 +41,6 @@ fi
 
 echo "Installing TPM" >> $SCRIPT_DIR/install.log
 git clone --depth=1 https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-~/.tmux/plugins/tpm/bin/install_plugins
 
 echo "Setting default shell to zsh" >> $SCRIPT_DIR/install.log
 sudo chsh -s /bin/zsh $(whoami)
@@ -56,3 +55,6 @@ fi
 
 sed -i "s/<ATUIN_SYNC_SERVER>/$ATUIN_HOST/g" host-docker/config/atuin/config.toml
 rcup -d $SCRIPT_DIR -f -B docker zshrc gitconfig gitignore p10k.zsh config/atuin/config.toml tmux.conf claude/settings.json claude/mcp.json
+
+echo "Installing TPM plugins" >> $SCRIPT_DIR/install.log
+~/.tmux/plugins/tpm/bin/install_plugins
