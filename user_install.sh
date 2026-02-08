@@ -14,12 +14,12 @@ if [ "$ARCH" = "aarch64" ]; then
   echo "Detected aarch64 architecture, installing Atuin from binary" >> $SCRIPT_DIR/install.log
   LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/atuinsh/atuin/releases/latest)
   LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
-  ATUIN_BINARY_URL="https://github.com/atuinsh/atuin/releases/download/${LATEST_VERSION}/atuin-${LATEST_VERSION}-aarch64-unknown-linux-gnu.tar.gz"
-  
+  ATUIN_BINARY_URL="https://github.com/atuinsh/atuin/releases/download/${LATEST_VERSION}/atuin-aarch64-unknown-linux-gnu.tar.gz"
+
   # Download and extract Atuin binary
   curl -L $ATUIN_BINARY_URL | sudo tar xz -C /tmp
   # Move the Atuin binary to /usr/local/bin
-  sudo mv "/tmp/atuin-${LATEST_VERSION}-aarch64-unknown-linux-gnu/atuin" /usr/local/bin/
+  sudo mv "/tmp/atuin-aarch64-unknown-linux-gnu/atuin" /usr/local/bin/
 else
   if [ `which apt` ]; then
     bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
