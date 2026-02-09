@@ -1,7 +1,8 @@
 #! /bin/bash
 set -e
 
-/usr/local/share/docker-init.sh
+# Required for Docker-in-Docker
+# /usr/local/share/docker-init.sh
 
 # Setup named host entry (Like docker on Mac & Windows)
 HOST_DOMAIN=host.docker.internal
