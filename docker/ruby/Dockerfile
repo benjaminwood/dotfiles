@@ -8,9 +8,12 @@ ARG INSTALL_ZSH="true"
 ARG USER="ben"
 ARG UID="1000"
 
-# Download script and run it with the option above
-RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/common-debian.sh")" -- "${INSTALL_ZSH}" "${USER}" "${UID}" "${UID}" "true" "true"
-RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/microsoft/vscode-dev-containers/main/script-library/docker-debian.sh")"
+# Install common utils (zsh, oh-my-zsh, user setup)
+RUN INSTALLZSH="${INSTALL_ZSH}" USERNAME="${USER}" UID="${UID}" GID="${UID}" UPGRADEPACKAGES="true" \
+    bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/common-utils/install.sh")"
+# Install Docker-in-Docker
+RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh")"
+# Install GitHub CLI
 RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/github-cli/install.sh")"
 
 # Init persistent .zsh_history
