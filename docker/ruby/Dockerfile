@@ -18,8 +18,8 @@ RUN mkdir -p /tmp/common-utils && \
     INSTALLZSH="${INSTALL_ZSH}" USERNAME="${USER}" UID="${UID}" GID="${UID}" UPGRADEPACKAGES="true" \
     bash install.sh && \
     rm -rf /tmp/common-utils
-# Install Docker-in-Docker
-RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh")"
+# Install Docker-in-Docker (moby not available on Debian Trixie)
+RUN MOBY="false" bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/docker-in-docker/install.sh")"
 # Install GitHub CLI
 RUN bash -c "$(curl -fsSL "https://raw.githubusercontent.com/devcontainers/features/main/src/github-cli/install.sh")"
 
