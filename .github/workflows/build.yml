@@ -6,7 +6,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: benjaminwood/ben-dev-env
 
 jobs:
   build-and-push-image:
@@ -14,6 +13,14 @@ jobs:
     permissions:
       contents: read
       packages: write
+
+    strategy:
+      matrix:
+        include:
+          - variant: ruby
+            image: ben-dev-env-ruby
+          - variant: node
+            image: ben-dev-env-node
 
     steps:
       - name: Checkout repository
@@ -36,13 +43,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/benjaminwood/${{ matrix.image }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/ruby/Dockerfile
+          file: docker/${{ matrix.variant }}/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
