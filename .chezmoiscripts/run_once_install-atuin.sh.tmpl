@@ -6,13 +6,14 @@ sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
 
 echo "Installing atuin..."
 ARCH=$(uname -m)
+LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/atuinsh/atuin/releases/latest)
+LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
 if [ "$ARCH" = "aarch64" ]; then
-  LATEST_RELEASE=$(curl -L -s -H 'Accept: application/json' https://github.com/atuinsh/atuin/releases/latest)
-  LATEST_VERSION=$(echo "$LATEST_RELEASE" | sed -e 's/.*"tag_name":"\([^"]*\)".*/\1/')
-  ATUIN_BINARY_URL="https://github.com/atuinsh/atuin/releases/download/${LATEST_VERSION}/atuin-aarch64-unknown-linux-gnu.tar.gz"
-  curl -L "$ATUIN_BINARY_URL" | sudo tar xz -C /tmp
-  sudo mv "/tmp/atuin-aarch64-unknown-linux-gnu/atuin" /usr/local/bin/
+  ATUIN_ARCH="aarch64"
 else
-  bash <(curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh)
+  ATUIN_ARCH="x86_64"
 fi
+ATUIN_BINARY_URL="https://github.com/atuinsh/atuin/releases/download/${LATEST_VERSION}/atuin-${ATUIN_ARCH}-unknown-linux-gnu.tar.gz"
+curl -L "$ATUIN_BINARY_URL" | sudo tar xz -C /tmp
+sudo mv "/tmp/atuin-${ATUIN_ARCH}-unknown-linux-gnu/atuin" /usr/local/bin/
 {{- end }}
