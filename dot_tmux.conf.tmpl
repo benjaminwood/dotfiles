@@ -11,8 +11,8 @@ bind -n M-Down select-pane -D
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
-# No delay for escape key press
-set -sg escape-time 0
+# Small delay for escape key press (prevents garbled escape sequences)
+set -sg escape-time 20
 {{- else }}
 bind -n S-Left select-pane -L
 bind -n S-Right select-pane -R
