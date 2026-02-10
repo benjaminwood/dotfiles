@@ -1,13 +1,19 @@
 # Mapping to reload config
 bind r source-file ~/.tmux.conf
 
-# Linux: Alt+arrow for pane selection
-# bind -n M-Left select-pane -L
-# bind -n M-Right select-pane -R
-# bind -n M-Up select-pane -U
-# bind -n M-Down select-pane -D
+{{- if .is_docker }}
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
 
-# macOS: Ctrl+Shift+arrow for pane selection
+# Shift arrow to switch windows
+bind -n S-Left  previous-window
+bind -n S-Right next-window
+
+# No delay for escape key press
+set -sg escape-time 0
+{{- else }}
 bind -n S-Left select-pane -L
 bind -n S-Right select-pane -R
 bind -n S-Up select-pane -U
@@ -19,6 +25,7 @@ bind -n M-S-Right next-window
 
 # No delay for escape key press
 set -sg escape-time 20
+{{- end }}
 
 # Enable mouse scrolling support
 set -g mouse on
@@ -27,8 +34,6 @@ set -g mouse on
 bind '"' split-window -c "#{pane_current_path}"
 bind % split-window -h -c "#{pane_current_path}"
 bind c new-window -c "#{pane_current_path}"
-
-# set -g status-right "#[fg=colour233,bg=colour240,bold] %h-%d %H:%M"
 
 # Use VI mode
 set-window-option -g mode-keys vi
@@ -40,13 +45,20 @@ bind -Tcopy-mode-vi l send -X cursor-up
 bind -Tcopy-mode-vi \; send -X cursor-right
 unbind -Tcopy-mode-vi h
 
+{{- if .is_docker }}
+bind -T copy-mode-vi Enter send-keys -X copy-pipe-and-cancel "nc -q 0 localhost 19988"
+{{- else }}
 set -s set-clipboard on
+{{- end }}
 
-set -g status on
+set -g status {{ if .is_docker }}off{{ else }}on{{ end }}
+
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
-# set -g @plugin 'tmux-plugins/tmux-yank'
+{{- if .is_docker }}
+set -g @plugin 'tmux-plugins/tmux-yank'
+{{- end }}
 set -g @plugin 'arcticicestudio/nord-tmux'
 
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)

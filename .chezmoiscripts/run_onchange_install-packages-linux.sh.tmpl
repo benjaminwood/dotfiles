@@ -1,0 +1,22 @@
+{{- if and (eq .chezmoi.os "linux") .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+
+# packages: git locales netcat-openbsd zsh iproute2 tmux
+echo "Installing system packages..."
+sudo apt-get update -qq
+sudo apt-get install -o Dpkg::Options::="--force-confold" -yq git locales netcat-openbsd zsh iproute2 tmux
+
+echo "Generating en_US.UTF-8 locale..."
+sudo sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+sudo locale-gen en_US.UTF-8
+sudo update-locale LANG=en_US.UTF-8
+
+echo "Setting system-wide environment..."
+printf 'LANG=en_US.UTF-8\nTERM=xterm-256color\n' | sudo tee /etc/environment > /dev/null
+
+sudo apt-get clean -y
+sudo rm -rf /var/lib/apt/lists/*
+{{- end }}

@@ -1,0 +1,11 @@
+{{- if .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+# tmux.conf hash: {{ include "dot_tmux.conf.tmpl" | sha256sum }}
+
+if [ -x "$HOME/.tmux/plugins/tpm/bin/install_plugins" ]; then
+  echo "Installing tmux plugins..."
+  "$HOME/.tmux/plugins/tpm/bin/install_plugins" || true
+fi
+{{- end }}

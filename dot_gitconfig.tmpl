@@ -1,13 +1,23 @@
 [user]
-	name = Benjamin Wood
-	email = benjaminwood@gmail.com
+	name = {{ .name }}
+	email = {{ .email }}
 [core]
 	editor = code --wait
+{{- if .is_docker }}
+	excludesfile = ~/.gitignore
+{{- else }}
 	excludesfile = /home/ben/.gitignore
+{{- end }}
 [fetch]
 	fsckObjects = false
+{{- if .is_docker }}
+[pull]
+	rebase = false
+{{- end }}
+{{- if .is_macos }}
 [credential "https://github.com"]
-	helper = 
+	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
+{{- end }}
 [alias]
 	fixup = "!fn() { _FIXUP_COMMIT=`git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7` && git commit -m \"fixup! ${_FIXUP_COMMIT}\" && GIT_EDITOR=true git rebase --autosquash -i ${_FIXUP_COMMIT}^; }; fn"

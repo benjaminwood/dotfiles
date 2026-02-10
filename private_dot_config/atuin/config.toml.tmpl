@@ -1,0 +1,4 @@
+{{- if .is_docker }}
+sync_address = "http://{{ env "ATUIN_SYNC_HOST" | default "host.docker.internal" }}:8888"
+{{- end }}
+filter_mode = "host"

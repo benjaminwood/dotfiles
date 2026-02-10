@@ -1,0 +1,28 @@
+{{- if ne .chezmoi.os "darwin" }}
+.aerospace.toml
+.config/karabiner
+{{- end }}
+
+{{- if not .is_linux_desktop }}
+.xprofile
+.Xresources
+.xsessionrc
+.config/i3
+.config/i3status
+.config/termite
+.config/alacritty
+{{- end }}
+
+{{- if not .is_docker }}
+.claude.json
+.claude/settings.json
+{{- end }}
+
+docker/
+scripts/
+.github/
+.claude/commands
+.claude/settings.local.json
+Brewfile
+LICENSE
+install.sh

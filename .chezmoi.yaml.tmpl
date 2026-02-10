@@ -1,0 +1,12 @@
+{{- $environment := "personal" -}}
+{{- if or (stat "/.dockerenv") (stat "/run/.containerenv") -}}
+{{-   $environment = "docker" -}}
+{{- end -}}
+
+data:
+  environment: {{ $environment | quote }}
+  is_docker: {{ eq $environment "docker" }}
+  is_macos: {{ eq .chezmoi.os "darwin" }}
+  is_linux_desktop: {{ and (eq .chezmoi.os "linux") (ne $environment "docker") }}
+  name: "Benjamin Wood"
+  email: "benjaminwood@gmail.com"

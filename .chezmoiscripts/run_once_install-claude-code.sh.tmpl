@@ -1,0 +1,12 @@
+{{- if .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+
+if ! command -v claude &> /dev/null; then
+  echo "Installing Claude Code..."
+  curl -fsSL https://claude.ai/install.sh | bash
+  sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+fi
+{{- end }}

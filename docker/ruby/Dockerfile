@@ -29,11 +29,17 @@ RUN mkdir -p /history && chown $USER:$USER /history
 
 USER $USER
 
-COPY ./ /home/$USER/dotfiles
-RUN sudo cp /home/$USER/dotfiles/docker/ruby/entrypoint.sh /usr/local/share/entrypoint.sh
+# Install chezmoi
+RUN sh -c "$(curl -fsSL get.chezmoi.io)" -- -b /usr/local/bin
 
-RUN sudo /home/$USER/dotfiles/system_install.sh
-RUN /home/$USER/dotfiles/user_install.sh
+COPY ./ /home/$USER/.local/share/chezmoi
+RUN sudo cp /home/$USER/.local/share/chezmoi/docker/ruby/entrypoint.sh /usr/local/share/entrypoint.sh
+
+# Ensure /.dockerenv exists for chezmoi environment detection during build
+RUN sudo touch /.dockerenv
+
+# Apply dotfiles via chezmoi (auto-detects Docker environment)
+RUN chezmoi init --apply --force
 
 RUN sudo apt-get clean -y && sudo rm -rf /var/lib/apt/lists/*
 

@@ -1,0 +1,9 @@
+{{- if .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+
+echo "Setting default shell to zsh..."
+sudo chsh -s /bin/zsh "$(whoami)"
+{{- end }}
