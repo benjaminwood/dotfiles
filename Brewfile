@@ -1,0 +1,8 @@
+brew "autossh"
+brew "fzf"
+brew "tmux"
+brew "kubectl"
+brew "helm"
+brew "kubectx"
+brew "gh"
+cask "nikitabobko/tap/aerospace"

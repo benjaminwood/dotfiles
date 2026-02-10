@@ -1,0 +1,11 @@
+{{- if .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+# fzf version: {{ include ".chezmoiexternal.yaml" | sha256sum }}
+
+if [ -d "$HOME/.fzf" ] && [ -f "$HOME/.fzf/install" ]; then
+  echo "Running fzf install script..."
+  "$HOME/.fzf/install" --all
+fi
+{{- end }}

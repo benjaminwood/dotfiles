@@ -1,0 +1,31 @@
+{{- if and (eq .chezmoi.os "linux") .is_docker -}}
+#!/bin/bash
+set -euo pipefail
+
+sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+
+echo "Installing system packages..."
+if command -v apt-get &>/dev/null; then
+  sudo apt-get update -qq
+  sudo apt-get install -o Dpkg::Options::="--force-confold" -yq git locales netcat-openbsd zsh iproute2 tmux
+  sudo apt-get clean -y
+  sudo rm -rf /var/lib/apt/lists/*
+elif command -v apk &>/dev/null; then
+  sudo apk add --no-cache git tmux zsh iproute2 ncurses
+elif command -v yum &>/dev/null; then
+  sudo yum -y install git zsh tmux iproute2
+elif command -v dnf &>/dev/null; then
+  sudo dnf -y install git zsh tmux iproute
+fi
+
+# Locale generation (Debian/Ubuntu only)
+if command -v locale-gen &>/dev/null; then
+  echo "Generating en_US.UTF-8 locale..."
+  sudo sed -i 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
+  sudo locale-gen en_US.UTF-8
+  sudo update-locale LANG=en_US.UTF-8
+fi
+
+echo "Setting system-wide environment..."
+printf 'LANG=en_US.UTF-8\nTERM=xterm-256color\n' | sudo tee /etc/environment > /dev/null
+{{- end }}

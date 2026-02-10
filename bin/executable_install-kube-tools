@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+
+# kubectl (architecture-aware)
+if ! command -v kubectl &>/dev/null; then
+  echo "Installing kubectl..."
+  ARCH=$(uname -m)
+  if [ "$ARCH" = "aarch64" ]; then KUBECTL_ARCH="arm64"; else KUBECTL_ARCH="amd64"; fi
+  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${KUBECTL_ARCH}/kubectl"
+  sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  rm -f kubectl
+else
+  echo "kubectl already installed"
+fi
+
+# helm
+if ! command -v helm &>/dev/null; then
+  echo "Installing helm..."
+  curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+else
+  echo "helm already installed"
+fi
+
+# kubectx + kubens
+if ! command -v kubectx &>/dev/null; then
+  echo "Installing kubectx/kubens..."
+  sudo git clone --depth=1 https://github.com/ahmetb/kubectx /opt/kubectx
+  sudo ln -sf /opt/kubectx/kubectx /usr/local/bin/kubectx
+  sudo ln -sf /opt/kubectx/kubens /usr/local/bin/kubens
+else
+  echo "kubectx already installed"
+fi
+
+echo "Done!"
