@@ -1,4 +1,11 @@
 {{- if .is_docker }}
-sync_address = "http://{{ env "ATUIN_SYNC_HOST" | default "host.docker.internal" }}:8888"
+{{- $atuinHost := env "ATUIN_SYNC_HOST" -}}
+{{- if not $atuinHost -}}
+{{-   $atuinHost = (output "sh" "-c" "nc -z host.docker.internal 8888 2>/dev/null && echo -n host.docker.internal || ip route | awk 'NR==1 {print $3}' | tr -d '\\n'") -}}
+{{- end -}}
+{{- if not $atuinHost -}}
+{{-   $atuinHost = "host.docker.internal" -}}
+{{- end }}
+sync_address = "http://{{ $atuinHost }}:8888"
 {{- end }}
 filter_mode = "host"

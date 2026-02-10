@@ -6,10 +6,15 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 # Bootstrap: install curl if missing (needed for chezmoi install)
 if ! command -v curl &>/dev/null; then
   echo "Installing curl..."
-  if [ "$(id -u)" -eq 0 ]; then
-    apt-get update -qq && apt-get install -yq curl
-  else
-    sudo apt-get update -qq && sudo apt-get install -yq curl
+  if [ "$(id -u)" -eq 0 ]; then SUDO=""; else SUDO="sudo"; fi
+  if command -v apt-get &>/dev/null; then
+    $SUDO apt-get update -qq && $SUDO apt-get install -yq curl
+  elif command -v apk &>/dev/null; then
+    $SUDO apk add --no-cache curl
+  elif command -v yum &>/dev/null; then
+    $SUDO yum install -y curl
+  elif command -v dnf &>/dev/null; then
+    $SUDO dnf install -y curl
   fi
 fi
 

@@ -16,6 +16,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 alias k="kubectl"
+{{- if .is_docker }}
+alias install-kube-tools="~/bin/install-kube-tools"
+{{- end }}
 
 function docker.set_ruby_version {
   export RUBY_VERSION=$1
@@ -57,13 +60,11 @@ inith() {
   echo >> ~/.zshrc
   echo "export ATUIN_HOST_NAME=$host" >> ~/.zshrc
   echo "export ATUIN_HOST_USER=ben" >> ~/.zshrc
+  echo 'eval "$(atuin init zsh --disable-up-arrow)"' >> ~/.zshrc
 
   atuin logout > /dev/null 2>&1
   atuin login -u ben -p "$password" -k "$key"
 
   source ~/.zshrc
+  eval "$(atuin init zsh --disable-up-arrow)"
 }
-
-{{ if lookPath "atuin" -}}
-eval "$(atuin init zsh --disable-up-arrow)"
-{{ end -}}

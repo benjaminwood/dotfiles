@@ -16,6 +16,7 @@
 {{- if not .is_docker }}
 .claude.json
 .claude/settings.json
+bin/
 {{- end }}
 
 docker/
