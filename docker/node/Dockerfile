@@ -51,21 +51,14 @@ RUN if ! cat /etc/group | grep -e "^npm:" > /dev/null 2>&1; then groupadd -r npm
 ENV HISTFILE=/history/.zsh_history
 RUN mkdir -p /history && chown $USER:$USER /history
 
+COPY docker/node/entrypoint.sh /usr/local/share/entrypoint.sh
+
 USER $USER
 
-# Install chezmoi
-RUN sh -c "$(curl -fsSL get.chezmoi.io)" -- -b /usr/local/bin
-
-COPY ./ /home/$USER/.local/share/chezmoi
-RUN sudo cp /home/$USER/.local/share/chezmoi/docker/node/entrypoint.sh /usr/local/share/entrypoint.sh
-
-# Ensure /.dockerenv exists for chezmoi environment detection during build
-RUN sudo touch /.dockerenv
-
-# Apply dotfiles via chezmoi (auto-detects Docker environment)
-RUN chezmoi init --apply --force
-
-RUN sudo apt-get clean -y && sudo rm -rf /var/lib/apt/lists/*
+# Install and apply dotfiles via install.sh (installs chezmoi, copies source, applies)
+COPY ./ /home/$USER/dotfiles
+# /.dockerenv doesn't exist during build (only at runtime), but chezmoi needs it for detection
+RUN sudo touch /.dockerenv && bash ~/dotfiles/install.sh && sudo rm -rf ~/dotfiles
 
 ENTRYPOINT ["/usr/local/share/entrypoint.sh"]
 CMD ["sleep", "infinity"]
