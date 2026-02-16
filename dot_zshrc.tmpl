@@ -18,6 +18,7 @@ source $ZSH/oh-my-zsh.sh
 alias k="kubectl"
 {{- if .is_docker }}
 alias install-kube-tools="~/bin/install-kube-tools"
+alias claude="claude --allow-dangerously-skip-permissions"
 {{- end }}
 
 function docker.set_ruby_version {
