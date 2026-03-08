@@ -1,4 +1,4 @@
-FROM node:22
+FROM node:22-trixie
 
 ENV DOCKER_BUILDKIT=1
 
