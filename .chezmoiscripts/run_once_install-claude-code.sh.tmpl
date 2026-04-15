@@ -5,8 +5,23 @@ set -euo pipefail
 sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
 
 if ! command -v claude &> /dev/null; then
-  echo "Installing Claude Code..."
-  curl -fsSL https://claude.ai/install.sh | bash
-  sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+  # Check if it exists at known paths but isn't in PATH yet
+  if [ -x "$HOME/.local/bin/claude" ]; then
+    echo "Claude Code found at ~/.local/bin/claude, adding to PATH..."
+    sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+  elif [ -x "$HOME/.claude/downloads/"claude-* ]; then
+    echo "Claude Code downloaded but not linked, setting up..."
+    local_bin="$(ls -1 "$HOME/.claude/downloads/"claude-* 2>/dev/null | head -1)"
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$local_bin" "$HOME/.local/bin/claude"
+    sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+  else
+    echo "Installing Claude Code..."
+    if curl -fsSL https://claude.ai/install.sh | bash; then
+      sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+    else
+      echo "Warning: Claude Code installation failed (possibly rate-limited). Skipping."
+    fi
+  fi
 fi
 {{- end }}
