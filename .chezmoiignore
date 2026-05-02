@@ -17,6 +17,7 @@
 .claude.json
 .claude/settings.json
 bin/
+.vscode-tmux-env.sh
 {{- end }}
 
 docker/

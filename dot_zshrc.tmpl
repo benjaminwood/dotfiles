@@ -69,3 +69,9 @@ inith() {
   source ~/.zshrc
   eval "$(atuin init zsh --disable-up-arrow)"
 }
+{{ if .is_docker }}
+# VS Code dev container env propagation for tmux. Keeps VSCODE_* and
+# REMOTE_CONTAINERS_* env vars usable from inside tmux panes so `code .` and
+# git-through-VS-Code keep working. See ~/.vscode-tmux-env.sh.
+[ -f "$HOME/.vscode-tmux-env.sh" ] && . "$HOME/.vscode-tmux-env.sh"
+{{- end }}
