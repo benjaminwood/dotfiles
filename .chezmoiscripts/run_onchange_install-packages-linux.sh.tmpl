@@ -28,4 +28,22 @@ fi
 
 echo "Setting system-wide environment..."
 printf 'LANG=en_US.UTF-8\nTERM=xterm-256color\n' | sudo tee /etc/environment > /dev/null
+
+# Install GitHub CLI from the upstream release tarball. Avoids per-distro
+# repo setup and works the same way on apt/apk/yum/dnf hosts. Update
+# GH_VERSION manually when a new version is desired.
+if ! command -v gh &>/dev/null; then
+  GH_VERSION="2.60.0"
+  GH_ARCH="$(uname -m)"
+  case "$GH_ARCH" in
+    x86_64)        GH_ARCH="amd64" ;;
+    aarch64|arm64) GH_ARCH="arm64" ;;
+    *)             echo "Skipping gh install: unsupported arch $GH_ARCH"; GH_ARCH="" ;;
+  esac
+  if [ -n "$GH_ARCH" ]; then
+    echo "Installing gh $GH_VERSION ($GH_ARCH)..."
+    curl -fsSL "https://github.com/cli/cli/releases/download/v${GH_VERSION}/gh_${GH_VERSION}_linux_${GH_ARCH}.tar.gz" \
+      | sudo tar -xz -C /usr/local --strip-components=1 --no-same-owner
+  fi
+fi
 {{- end }}
