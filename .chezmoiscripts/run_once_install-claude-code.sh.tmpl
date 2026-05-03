@@ -4,10 +4,15 @@ set -euo pipefail
 
 sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
 
-if ! command -v claude &> /dev/null; then
-  # Check if it exists at known paths but isn't in PATH yet
+# Check for /usr/local/bin/claude specifically rather than `command -v claude`.
+# `command -v` can find ~/.local/bin/claude when chezmoi runs under a login
+# shell (which has ~/.local/bin on PATH), causing the script to short-circuit
+# without creating the system-wide symlink. We specifically want /usr/local/bin
+# populated so every subsequent shell (login or not) picks it up.
+if [ ! -x /usr/local/bin/claude ]; then
+  # Check if it exists at known paths and just needs linking
   if [ -x "$HOME/.local/bin/claude" ]; then
-    echo "Claude Code found at ~/.local/bin/claude, adding to PATH..."
+    echo "Claude Code found at ~/.local/bin/claude, linking to /usr/local/bin..."
     sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
   elif [ -x "$HOME/.claude/downloads/"claude-* ]; then
     echo "Claude Code downloaded but not linked, setting up..."

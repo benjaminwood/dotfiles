@@ -25,6 +25,25 @@ if ! command -v chezmoi &>/dev/null; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Self-heal: if chezmoi state exists but system-layer tools are missing
+# (e.g. after a dev container rebuild where the persisted home volume keeps
+# state but /etc/passwd and /usr/local/bin are reset to the image layer), nuke
+# the state so run_once_ and run_onchange_ scripts re-execute. The scripts are
+# already idempotent, so over-running is safe.
+if [ -f "$HOME/.config/chezmoi/chezmoistate.boltdb" ]; then
+  need_rerun=0
+  for tool in atuin claude; do
+    if ! [ -x "/usr/local/bin/$tool" ]; then
+      need_rerun=1
+      break
+    fi
+  done
+  if [ "$need_rerun" = "1" ]; then
+    echo "System-layer tools missing; resetting chezmoi state to force scripts to re-run."
+    rm -f "$HOME/.config/chezmoi/chezmoistate.boltdb"
+  fi
+fi
+
 # Copy source to chezmoi's default location if not already there
 CHEZMOI_SOURCE="$HOME/.local/share/chezmoi"
 if [ "$SCRIPT_DIR" != "$CHEZMOI_SOURCE" ]; then
