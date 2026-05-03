@@ -25,6 +25,13 @@ if ! command -v chezmoi &>/dev/null; then
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
+# Self-update: if this script is running from a git clone, fast-forward to the
+# latest main so subsequent dotfiles fixes propagate on each invocation. Safe
+# on networks where GitHub is unreachable (--ff-only + || true).
+if [ -d "$SCRIPT_DIR/.git" ] && command -v git &>/dev/null; then
+  git -C "$SCRIPT_DIR" pull --ff-only --quiet 2>/dev/null || true
+fi
+
 # Self-heal: if chezmoi state exists but system-layer tools are missing
 # (e.g. after a dev container rebuild where the persisted home volume keeps
 # state but /etc/passwd and /usr/local/bin are reset to the image layer), nuke
