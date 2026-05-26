@@ -7,23 +7,37 @@ sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
 # Check for /usr/local/bin/claude specifically rather than `command -v claude`.
 # `command -v` can find ~/.local/bin/claude when chezmoi runs under a login
 # shell (which has ~/.local/bin on PATH), causing the script to short-circuit
-# without creating the system-wide symlink. We specifically want /usr/local/bin
+# without creating the system-wide copy. We specifically want /usr/local/bin
 # populated so every subsequent shell (login or not) picks it up.
+
+# Install /usr/local/bin/claude as a real file (not a symlink into ~/.local/).
+# Symlinks die for any non-ben user in the container: $HOME is mode 0700, so
+# other users get EACCES traversing it at execve / stat time.
+install_claude_binary() {
+  local resolved
+  resolved="$(readlink -f "$HOME/.local/bin/claude")"
+  if [ ! -x "$resolved" ]; then
+    echo "Warning: resolved claude binary not executable: $resolved" >&2
+    return 1
+  fi
+  sudo install -m 0755 "$resolved" /usr/local/bin/claude
+}
+
 if [ ! -x /usr/local/bin/claude ]; then
-  # Check if it exists at known paths and just needs linking
+  # Check if it exists at known paths and just needs publishing to /usr/local/bin
   if [ -x "$HOME/.local/bin/claude" ]; then
-    echo "Claude Code found at ~/.local/bin/claude, linking to /usr/local/bin..."
-    sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+    echo "Claude Code found at ~/.local/bin/claude, publishing to /usr/local/bin..."
+    install_claude_binary
   elif [ -x "$HOME/.claude/downloads/"claude-* ]; then
     echo "Claude Code downloaded but not linked, setting up..."
     local_bin="$(ls -1 "$HOME/.claude/downloads/"claude-* 2>/dev/null | head -1)"
     mkdir -p "$HOME/.local/bin"
     ln -sf "$local_bin" "$HOME/.local/bin/claude"
-    sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+    install_claude_binary
   else
     echo "Installing Claude Code..."
     if curl -fsSL https://claude.ai/install.sh | bash; then
-      sudo ln -sf "$HOME/.local/bin/claude" /usr/local/bin/claude
+      install_claude_binary
     else
       echo "Warning: Claude Code installation failed (possibly rate-limited). Skipping."
     fi

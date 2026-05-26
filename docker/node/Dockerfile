@@ -8,6 +8,13 @@ ARG INSTALL_ZSH="true"
 ARG USER="ben"
 ARG UID="1000"
 
+# node:22-trixie ships the `node` user at uid 1000. Free that uid so the
+# common-utils feature below can honor UID=1000 for ben instead of falling back
+# to 1001 (which forces every downstream consumer to swap UIDs back to match
+# the host's user). Renumber node out of the way; nothing in the image needs
+# the node user account anyway.
+RUN usermod -u 9999 node && groupmod -g 9999 node
+
 # Install common utils (zsh, oh-my-zsh, user setup)
 # install.sh execs into main.sh which needs scripts/ and bin/ siblings,
 # so we download the full feature directory first (mirrors devcontainer CLI behavior)
@@ -52,6 +59,12 @@ ENV HISTFILE=/history/.zsh_history
 RUN mkdir -p /history && chown $USER:$USER /history
 
 COPY docker/node/entrypoint.sh /usr/local/share/entrypoint.sh
+
+# Helper for derived images that add a second user account (e.g. agent personas)
+# and want them to share ben's interactive shell setup. Invoked as root:
+#   RUN clone-user-shell <target-user>
+COPY scripts/clone-user-shell.sh /usr/local/bin/clone-user-shell
+RUN chmod 0755 /usr/local/bin/clone-user-shell
 
 USER $USER
 
