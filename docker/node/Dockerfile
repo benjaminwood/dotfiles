@@ -22,7 +22,7 @@ RUN mkdir -p /tmp/common-utils && \
     curl -fsSL https://github.com/devcontainers/features/archive/main.tar.gz | \
     tar xz --strip-components=3 -C /tmp/common-utils features-main/src/common-utils && \
     cd /tmp/common-utils && \
-    INSTALLZSH="${INSTALL_ZSH}" USERNAME="${USER}" UID="${UID}" GID="${UID}" UPGRADEPACKAGES="true" \
+    INSTALLZSH="${INSTALL_ZSH}" USERNAME="${USER}" USERUID="${UID}" USERGID="${UID}" UPGRADEPACKAGES="true" \
     bash install.sh && \
     rm -rf /tmp/common-utils
 # Install Docker-in-Docker (moby not available on Debian Trixie)
