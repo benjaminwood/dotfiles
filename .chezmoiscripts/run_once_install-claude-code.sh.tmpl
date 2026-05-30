@@ -2,45 +2,33 @@
 #!/bin/bash
 set -euo pipefail
 
-sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }
+# Ensure Claude Code is installed for the current user under ~/.local/bin.
+# That's where Anthropic's installer puts it, and where `claude upgrade`
+# writes new versions. Previously this script ALSO published a copy to
+# /usr/local/bin/claude — a static snapshot — to work around symlink
+# traversal failures when other users tried to exec a claude binary nested
+# inside ben's 0700 home. We've moved off that model: in the eldar
+# container each user (ben, eldar) has their own ~/.local/share/claude tree
+# under a 0750-group-ben home, so any in-container user can exec their own
+# copy. The system-wide snapshot was just shadowing the user-local install
+# and silently keeping `claude upgrade` from taking effect. So we don't
+# create it anymore.
 
-# Check for /usr/local/bin/claude specifically rather than `command -v claude`.
-# `command -v` can find ~/.local/bin/claude when chezmoi runs under a login
-# shell (which has ~/.local/bin on PATH), causing the script to short-circuit
-# without creating the system-wide copy. We specifically want /usr/local/bin
-# populated so every subsequent shell (login or not) picks it up.
+if [ -x "$HOME/.local/bin/claude" ]; then
+  exit 0
+fi
 
-# Install /usr/local/bin/claude as a real file (not a symlink into ~/.local/).
-# Symlinks die for any non-ben user in the container: $HOME is mode 0700, so
-# other users get EACCES traversing it at execve / stat time.
-install_claude_binary() {
-  local resolved
-  resolved="$(readlink -f "$HOME/.local/bin/claude")"
-  if [ ! -x "$resolved" ]; then
-    echo "Warning: resolved claude binary not executable: $resolved" >&2
-    return 1
-  fi
-  sudo install -m 0755 "$resolved" /usr/local/bin/claude
-}
+# If a previously-downloaded binary exists under ~/.claude/downloads/, link
+# it in. Otherwise, run the upstream installer.
+if compgen -G "$HOME/.claude/downloads/claude-*" > /dev/null; then
+  local_bin="$(ls -1 "$HOME/.claude/downloads/"claude-* | head -1)"
+  mkdir -p "$HOME/.local/bin"
+  ln -sf "$local_bin" "$HOME/.local/bin/claude"
+  exit 0
+fi
 
-if [ ! -x /usr/local/bin/claude ]; then
-  # Check if it exists at known paths and just needs publishing to /usr/local/bin
-  if [ -x "$HOME/.local/bin/claude" ]; then
-    echo "Claude Code found at ~/.local/bin/claude, publishing to /usr/local/bin..."
-    install_claude_binary
-  elif [ -x "$HOME/.claude/downloads/"claude-* ]; then
-    echo "Claude Code downloaded but not linked, setting up..."
-    local_bin="$(ls -1 "$HOME/.claude/downloads/"claude-* 2>/dev/null | head -1)"
-    mkdir -p "$HOME/.local/bin"
-    ln -sf "$local_bin" "$HOME/.local/bin/claude"
-    install_claude_binary
-  else
-    echo "Installing Claude Code..."
-    if curl -fsSL https://claude.ai/install.sh | bash; then
-      install_claude_binary
-    else
-      echo "Warning: Claude Code installation failed (possibly rate-limited). Skipping."
-    fi
-  fi
+echo "Installing Claude Code..."
+if ! curl -fsSL https://claude.ai/install.sh | bash; then
+  echo "Warning: Claude Code installation failed (possibly rate-limited). Skipping." >&2
 fi
 {{- end }}
