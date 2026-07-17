@@ -33,6 +33,9 @@ unbind -Tcopy-mode-vi h
 
 set -s set-clipboard on
 
+# Pass through OSC 8 hyperlinks to the outer terminal
+set -as terminal-features ",*:hyperlinks"
+
 set -g status on
 
 # List of plugins
