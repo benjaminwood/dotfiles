@@ -1,0 +1,85 @@
+# jkl; movement layout (shifted one key right from hjkl).
+# j = left, k = down, l = up, ; = right — patched through every minor mode
+# that uses the movement row, in both normal and select mode.
+
+# ── main row ────────────────────────────────────────────────────────────
+
+[keys.normal]
+j = "move_char_left"
+k = "move_visual_line_down"
+l = "move_visual_line_up"
+";" = "move_char_right"
+h = "collapse_selection"   # rescue what ; used to do
+
+[keys.select]
+j = "extend_char_left"
+k = "extend_visual_line_down"
+l = "extend_visual_line_up"
+";" = "extend_char_right"
+h = "collapse_selection"
+
+# ── goto mode (g) ───────────────────────────────────────────────────────
+
+[keys.normal.g]
+j = "goto_line_start"      # was gh
+";" = "goto_line_end"      # was gl
+k = "move_line_down"       # textual down, was gj
+l = "move_line_up"         # textual up, was gk
+
+[keys.select.g]
+j = "goto_line_start"      # goto_* commands extend automatically in select mode
+";" = "goto_line_end"
+k = "extend_line_down"
+l = "extend_line_up"
+
+# ── window mode (C-w and Space-w) ───────────────────────────────────────
+
+[keys.normal."C-w"]
+j = "jump_view_left"
+k = "jump_view_down"
+l = "jump_view_up"
+";" = "jump_view_right"
+J = "swap_view_left"
+K = "swap_view_down"
+L = "swap_view_up"
+":" = "swap_view_right"    # shifted L — awkward, but consistent
+
+[keys.normal.space.w]
+j = "jump_view_left"
+k = "jump_view_down"
+l = "jump_view_up"
+";" = "jump_view_right"
+J = "swap_view_left"
+K = "swap_view_down"
+L = "swap_view_up"
+":" = "swap_view_right"
+
+[keys.select."C-w"]
+j = "jump_view_left"
+k = "jump_view_down"
+l = "jump_view_up"
+";" = "jump_view_right"
+
+[keys.select.space.w]
+j = "jump_view_left"
+k = "jump_view_down"
+l = "jump_view_up"
+";" = "jump_view_right"
+
+# ── view mode (z, and sticky Z) ─────────────────────────────────────────
+
+[keys.normal.z]
+k = "scroll_down"          # was zj
+l = "scroll_up"            # was zk
+
+[keys.normal.Z]
+k = "scroll_down"
+l = "scroll_up"
+
+[keys.select.z]
+k = "scroll_down"
+l = "scroll_up"
+
+[keys.select.Z]
+k = "scroll_down"
+l = "scroll_up"
