@@ -8,7 +8,9 @@
 
 [editor.file-picker]
 hidden = false
-git-ignore = false
+git-ignore = false    # per-repo .gitignore
+git-global = false    # global gitignore (core.excludesFile)
+git-exclude = false   # .git/info/exclude
 
 # ── main row ────────────────────────────────────────────────────────────
 
