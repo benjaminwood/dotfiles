@@ -2,6 +2,14 @@
 # j = left, k = down, l = up, ; = right — patched through every minor mode
 # that uses the movement row, in both normal and select mode.
 
+# ── file picker ─────────────────────────────────────────────────────────
+# Show dotfiles (env files etc.) and gitignored files (notes kept in the
+# work tree). Noise dirs are excluded explicitly in ~/.config/helix/ignore.
+
+[editor.file-picker]
+hidden = false
+git-ignore = false
+
 # ── main row ────────────────────────────────────────────────────────────
 
 [keys.normal]

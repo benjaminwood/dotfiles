@@ -1,0 +1,11 @@
+# Global Helix picker ignore list (gitignore syntax).
+# The picker shows hidden and gitignored files (see config.toml file-picker
+# section) — this list is the explicit "never show me these" set.
+# Per-project additions go in <repo>/.helix/ignore.
+
+.git/
+node_modules/
+.direnv/
+.venv/
+__pycache__/
+vendor/bundle/
