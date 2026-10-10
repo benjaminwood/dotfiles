@@ -8,4 +8,12 @@
 {{- end }}
 sync_address = "http://{{ $atuinHost }}:8888"
 {{- end }}
+{{- if .is_macos }}
+sync_address = "http://desktop:8888"
+enter_accept = true
+
+[sync]
+records = true
+{{- else }}
 filter_mode = "host"
+{{- end }}

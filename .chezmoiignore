@@ -1,6 +1,22 @@
 {{- if ne .chezmoi.os "darwin" }}
 .aerospace.toml
 .config/karabiner
+.zprofile
+.vsvimrc
+.hammerspoon
+.config/zed
+.config/zsh
+{{- end }}
+
+{{- if eq .chezmoi.os "darwin" }}
+# Global gitignore stays local on macOS (core.excludesfile still points to it)
+.gitignore
+# Leave ~/.claude alone (Claude Code manages it)
+.claude
+# Homebrew provides fzf on macOS
+.fzf
+README.md
+CLAUDE.md
 {{- end }}
 
 {{- if not .is_linux_desktop }}

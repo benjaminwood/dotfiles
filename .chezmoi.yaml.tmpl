@@ -2,6 +2,11 @@
 {{- if or (stat "/.dockerenv") (stat "/run/.containerenv") -}}
 {{-   $environment = "docker" -}}
 {{- end -}}
+{{- $macSourceDir := joinPath .chezmoi.homeDir "projects/benjaminwood/dotfiles" -}}
+
+{{- if and (eq .chezmoi.os "darwin") (stat $macSourceDir) }}
+sourceDir: {{ $macSourceDir | quote }}
+{{- end }}
 
 data:
   environment: {{ $environment | quote }}

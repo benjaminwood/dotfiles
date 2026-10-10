@@ -7,8 +7,14 @@ Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/). Works across 
 ### macOS
 
 ```bash
-sh -c "$(curl -fsSL get.chezmoi.io)" -- init --apply benjaminwood
+brew install chezmoi
+git clone https://github.com/benjaminwood/dotfiles.git ~/projects/benjaminwood/dotfiles
+chezmoi init --source ~/projects/benjaminwood/dotfiles
+chezmoi diff        # review first
+chezmoi apply
 ```
+
+chezmoi uses the clone directly as its source, so edit files there and run `chezmoi apply`. For files an app rewrites itself (Karabiner), run `chezmoi re-add` afterwards. Machine-local files such as `~/.cf2_secrets` are sourced if present and never committed.
 
 ### Docker / Linux
 
@@ -31,6 +37,10 @@ bash /tmp/dotfiles/install.sh
 | Claude Code | - | yes | Auto-installed in containers |
 | AeroSpace | yes | - | Tiling window manager |
 | Karabiner | yes | - | Keyboard customization |
+| Hammerspoon | yes | - | Dock/lock automation |
+| Zed | yes | - | Settings + keymap |
+| Helix | yes | yes | jkl; movement layout |
+| zsh functions | yes | - | `gwt` git worktree helper in `~/.config/zsh/functions` |
 | i3 / i3status | - | linux desktop | Tiling WM for X11 |
 | alacritty / termite | - | linux desktop | Terminal emulators |
 | kubectl, helm, kubectx | brew | on-demand | `install-kube-tools` in Docker |

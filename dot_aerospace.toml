@@ -167,6 +167,10 @@ if.app-id = 'com.google.chrome.for.testing'
 run = ['move-node-to-workspace 9']
 
 [[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = ['layout floating']
+
+[[on-window-detected]]
 if.app-id = 'com.apple.MobileSMS'
 run = ['layout floating']
 
@@ -174,6 +178,14 @@ run = ['layout floating']
 if.app-id = 'com.apple.Notes'
 run = ['layout floating']
 
+# [[on-window-detected]]
+# if.app-id = 'com.googlecode.iterm2'
+# run = ['layout floating']
+
 [[on-window-detected]]
-if.app-id = 'com.googlecode.iterm2'
+if.app-id = 'com.electron.brain.fm'
 run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'app.tuple.app'
+run = ['move-node-to-workspace 7']

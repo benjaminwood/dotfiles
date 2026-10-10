@@ -9,6 +9,8 @@ Personal dotfiles managed with chezmoi. Supports macOS, Linux desktop, and Docke
 - **Chezmoi naming**: `dot_` prefix becomes `.`, `private_` sets 0600 permissions, `executable_` sets +x, `.tmpl` suffix enables Go template rendering
 - **Environment detection**: `.chezmoi.yaml.tmpl` sets `is_docker`, `is_macos`, `is_linux_desktop` based on presence of `/.dockerenv`
 - **Docker = base config**: Docker containers use the same config as macOS (no special docker branches in config files)
+- **macOS edits the repo directly**: on macOS, `.chezmoi.yaml.tmpl` sets `sourceDir` to `~/projects/benjaminwood/dotfiles` when that checkout exists, so there is no copy under `~/.local/share/chezmoi`
+- **Linux output must not change for macOS work**: guard macOS-only content with `{{- if .is_macos }}` or a darwin block in `.chezmoiignore`, and diff rendered Docker/Linux desktop output before and after
 - **Atuin is opt-in**: Not activated until user runs `inith`. The `eval "$(atuin init zsh ...)"` line is appended to `~/.zshrc` by `inith`, not present in the managed template
 
 ## File layout
@@ -47,6 +49,10 @@ docker rm -f dotfiles-test
 
 ## Gotchas
 
+- Never commit secrets or employer-internal details (this repo is public). On macOS, `~/.cf2_secrets`, `~/bin`, the global `~/.gitignore`, and `~/.config/zsh/functions/rails-console.zsh` stay local; `.zshrc` sources any `*.zsh` in that functions dir so local-only files still load
+- `dot_tmux.conf.tmpl` is fetched raw from GitHub by a local `kpod` helper that strips `{{` lines, so keep platform-specific content out of it
+- Karabiner (and other apps) rewrite their own config files; after changing settings in the app, run `chezmoi re-add` to pull them back into the repo
+- macOS `brew bundle` runs with `--no-upgrade` so applying never upgrades existing packages
 - `run_once_` scripts use chezmoi's state DB to track execution. Delete `~/.config/chezmoi/chezmoistate.boltdb` to re-run them
 - The atuin install script (`run_once_install-atuin.sh.tmpl`) downloads arch-specific binaries to `/usr/local/bin/`, not `~/.atuin/bin/`
 - Package install script supports apt, apk, yum, and dnf but locale generation is guarded to only run on Debian/Ubuntu
