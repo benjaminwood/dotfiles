@@ -1,0 +1,10 @@
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Added by OrbStack: command-line tools and integration
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+
+# Machine-local secrets, never committed
+[ -f ~/.cf2_secrets ] && source ~/.cf2_secrets
+
+# Created by `pipx` on 2025-08-22 22:37:15
+export PATH="$PATH:$HOME/.local/bin"

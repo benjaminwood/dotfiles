@@ -75,3 +75,47 @@ inith() {
 # git-through-VS-Code keep working. See ~/.vscode-tmux-env.sh.
 [ -f "$HOME/.vscode-tmux-env.sh" ] && . "$HOME/.vscode-tmux-env.sh"
 {{- end }}
+{{- if .is_macos }}
+
+. "$HOME/.atuin/bin/env"
+export ATUIN_HOST_NAME=ben-cf-mbp
+export ATUIN_HOST_USER=ben
+eval "$(atuin init zsh --disable-up-arrow)"
+
+# oh-my-zsh's git plugin aliases gwt; replace it with the worktree function
+unalias gwt 2>/dev/null
+for f in ~/.config/zsh/functions/*.zsh(N); do source "$f"; done
+unset f
+
+eval "$(mise activate zsh)"
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+export PATH="$PATH:$HOME/.local/bin"
+
+# omnara
+export OMNARA_INSTALL="$HOME/.omnara"
+export PATH="$OMNARA_INSTALL/bin:$PATH"
+
+# Composio CLI
+export COMPOSIO_INSTALL_DIR="$HOME/.composio"
+export PATH="$HOME/.composio:$PATH"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:$HOME/.lmstudio/bin"
+
+export PATH="$PATH:$HOME/bin"
+
+alias chrome-relay="~/projects/benjaminwood/brain/.devcontainer/toggle-chrome-relay.sh"
+
+code-eldar() {
+  local project="${1:?Usage: code-eldar <project> <service> [path]}"
+  local service="${2:?Usage: code-eldar <project> <service> [path]}"
+  local remote_path="${3:-/}"
+  local container="${project}_devcontainer-${service}-1"
+  local hex=$(printf "{\"containerName\":\"/${container}\",\"settings\":{\"context\":\"eldar\"}}" | xxd -p | tr -d '\n')
+  code --folder-uri="vscode-remote://attached-container+${hex}${remote_path}"
+}
+
+# cf-dev CLI (dev command + completion)
+[ -f "$HOME/.config/cf-dev/dev.zsh" ] && source "$HOME/.config/cf-dev/dev.zsh"
+{{- end }}

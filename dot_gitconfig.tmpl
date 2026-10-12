@@ -3,7 +3,7 @@
 	email = {{ .email }}
 [core]
 	editor = code --wait
-{{- if .is_docker }}
+{{- if or .is_docker .is_macos }}
 	excludesfile = ~/.gitignore
 {{- else }}
 	excludesfile = /home/ben/.gitignore
