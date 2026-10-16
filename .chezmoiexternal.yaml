@@ -1,26 +1,34 @@
+# Pinned to exact commits with checksums, so every machine gets the same
+# plugin code. To update one: point the URL at a newer commit (or tag),
+# download it, and replace the checksum with its sha256sum.
+
 ".oh-my-zsh":
   type: archive
-  url: "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
+  url: "https://github.com/ohmyzsh/ohmyzsh/archive/964ddf789b022b6958b27d02d7fa54f552de21e9.tar.gz"
+  checksum:
+    sha256: "89ccb57b3328f0df303d557bef54cc7d0efb6f22f016552943ef3e15273e0588"
   exact: true
   stripComponents: 1
-  refreshPeriod: 168h
 
 ".oh-my-zsh/custom/themes/powerlevel10k":
   type: archive
-  url: "https://github.com/romkatv/powerlevel10k/archive/master.tar.gz"
+  url: "https://github.com/romkatv/powerlevel10k/archive/d05a1b00f9a61f9578bf9dc19b8451942dde8734.tar.gz"
+  checksum:
+    sha256: "cc66c800e3ef7e8875916bc2861e2882d337588762418570f1a57c1b4e8ab054"
   exact: true
   stripComponents: 1
-  refreshPeriod: 168h
 
 ".tmux/plugins/tpm":
   type: archive
-  url: "https://github.com/tmux-plugins/tpm/archive/master.tar.gz"
+  url: "https://github.com/tmux-plugins/tpm/archive/e261deb1b47614eed3400089ce7197dc68acc4eb.tar.gz"
+  checksum:
+    sha256: "72d92c512270d4857e27519ac97b92a52cf149afe4d92f26860c710f60bbbe37"
   exact: true
   stripComponents: 1
-  refreshPeriod: 168h
 
 ".fzf":
   type: archive
   url: "https://github.com/junegunn/fzf/archive/refs/tags/v0.57.0.tar.gz"
+  checksum:
+    sha256: "d4e8e25fad2d3f75943b403c40b61326db74b705bf629c279978fdd0ceb1f97c"
   stripComponents: 1
-  refreshPeriod: 168h

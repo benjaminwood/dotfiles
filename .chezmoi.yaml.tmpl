@@ -13,5 +13,7 @@ data:
   is_docker: {{ eq $environment "docker" }}
   is_macos: {{ eq .chezmoi.os "darwin" }}
   is_linux_desktop: {{ and (eq .chezmoi.os "linux") (ne $environment "docker") }}
+  # NixOS: packages come from the system config, chezmoi only places files.
+  is_nixos: {{ if stat "/etc/NIXOS" }}true{{ else }}false{{ end }}
   name: "Benjamin Wood"
   email: "benjaminwood@gmail.com"

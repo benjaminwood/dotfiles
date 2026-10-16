@@ -1,4 +1,4 @@
-{{- if .is_docker -}}
+{{- if or .is_docker .is_nixos -}}
 #!/bin/bash
 set -euo pipefail
 
