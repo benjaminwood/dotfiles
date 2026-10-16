@@ -1,5 +1,5 @@
 {{- if and (eq .chezmoi.os "linux") .is_docker -}}
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 sudo() { if [ "$(id -u)" -eq 0 ]; then "$@"; else command sudo "$@"; fi; }

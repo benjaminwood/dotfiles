@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Sets up a persistent SSH tunnel from localhost:8888 to desktop:8888
 # so that devcontainers on this Mac can reach the Atuin sync server
