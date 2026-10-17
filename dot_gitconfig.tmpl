@@ -6,7 +6,7 @@
 {{- if or .is_docker .is_macos }}
 	excludesfile = ~/.gitignore
 {{- else }}
-	excludesfile = /home/ben/.gitignore
+	excludesfile = {{ .chezmoi.homeDir }}/.gitignore
 {{- end }}
 [fetch]
 	fsckObjects = false
