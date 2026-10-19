@@ -20,6 +20,11 @@ alias k="kubectl"
 alias install-kube-tools="~/bin/install-kube-tools"
 alias claude="claude --allow-dangerously-skip-permissions"
 {{- end }}
+{{- if and .is_nixos (eq .chezmoi.hostname "eldar") }}
+# Eldar's VM: start without permission prompts. The supervisor, outside the
+# VM, is what gates anything that needs a credential.
+alias claude="claude --dangerously-skip-permissions"
+{{- end }}
 
 function docker.set_ruby_version {
   export RUBY_VERSION=$1
