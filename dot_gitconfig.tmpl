@@ -18,6 +18,10 @@
 [credential "https://github.com"]
 	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
+{{- else if .is_nixos }}
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
 {{- end }}
 [alias]
 	fixup = "!fn() { _FIXUP_COMMIT=`git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7` && git commit -m \"fixup! ${_FIXUP_COMMIT}\" && GIT_EDITOR=true git rebase --autosquash -i ${_FIXUP_COMMIT}^; }; fn"
