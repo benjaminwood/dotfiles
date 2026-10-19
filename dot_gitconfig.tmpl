@@ -28,3 +28,9 @@
 {{- end }}
 [alias]
 	fixup = "!fn() { _FIXUP_COMMIT=`git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7` && git commit -m \"fixup! ${_FIXUP_COMMIT}\" && GIT_EDITOR=true git rebase --autosquash -i ${_FIXUP_COMMIT}^; }; fn"
+{{- if and .is_nixos (eq .chezmoi.hostname "eldar") }}
+# Eldar's VM: machine-local settings that don't belong in a public repo (the
+# commit email per GitHub org). Last, so it can override the above.
+[include]
+	path = ~/.gitconfig.local
+{{- end }}
