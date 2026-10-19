@@ -19,6 +19,13 @@ README.md
 CLAUDE.md
 {{- end }}
 
+{{- if .is_nixos }}
+# The repo's own docs, not dotfiles. Leaves ~/CLAUDE.md to the machine (on
+# eldar-os it describes working on the whole system).
+README.md
+CLAUDE.md
+{{- end }}
+
 {{- if not .is_linux_desktop }}
 .xprofile
 .Xresources
