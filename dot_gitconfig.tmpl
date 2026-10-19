@@ -18,7 +18,10 @@
 [credential "https://github.com"]
 	helper =
 	helper = !/opt/homebrew/bin/gh auth git-credential
-{{- else if .is_nixos }}
+{{- else if and .is_nixos (eq .chezmoi.hostname "eldar-os") }}
+{{- /* eldar-os itself only. Inside Eldar's VM the system gitconfig owns the
+       credential helpers (the supervisor's), and the empty `helper =` here
+       would discard them. */}}
 [credential "https://github.com"]
 	helper =
 	helper = !gh auth git-credential
