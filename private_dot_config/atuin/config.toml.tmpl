@@ -21,6 +21,6 @@ enter_accept = true
 
 [sync]
 records = true
-{{- else }}
+{{- else if not .is_nixos }}
 filter_mode = "host"
 {{- end }}
