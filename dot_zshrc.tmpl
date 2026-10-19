@@ -61,19 +61,29 @@ inith() {
   local password="$1"
   local key="$2"
   local host="$3"
+{{- if .is_nixos }}
+  # NixOS re-applies ~/.zshrc whenever the dotfiles change, which would drop
+  # appended lines; keep them in an unmanaged file it sources instead.
+  local rc=~/.zshrc.atuin
+{{- else }}
+  local rc=~/.zshrc
+{{- end }}
 
-  echo >> ~/.zshrc
-  echo >> ~/.zshrc
-  echo "export ATUIN_HOST_NAME=$host" >> ~/.zshrc
-  echo "export ATUIN_HOST_USER=ben" >> ~/.zshrc
-  echo 'eval "$(atuin init zsh --disable-up-arrow)"' >> ~/.zshrc
+  echo >> $rc
+  echo >> $rc
+  echo "export ATUIN_HOST_NAME=$host" >> $rc
+  echo "export ATUIN_HOST_USER=ben" >> $rc
+  echo 'eval "$(atuin init zsh --disable-up-arrow)"' >> $rc
 
   atuin logout > /dev/null 2>&1
   atuin login -u ben -p "$password" -k "$key"
 
-  source ~/.zshrc
+  source $rc
   eval "$(atuin init zsh --disable-up-arrow)"
 }
+{{- if .is_nixos }}
+[ -f ~/.zshrc.atuin ] && source ~/.zshrc.atuin
+{{- end }}
 {{ if .is_docker }}
 # VS Code dev container env propagation for tmux. Keeps VSCODE_* and
 # REMOTE_CONTAINERS_* env vars usable from inside tmux panes so `code .` and

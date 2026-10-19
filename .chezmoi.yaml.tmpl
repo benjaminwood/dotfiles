@@ -15,5 +15,8 @@ data:
   is_linux_desktop: {{ and (eq .chezmoi.os "linux") (ne $environment "docker") }}
   # NixOS: packages come from the system config, chezmoi only places files.
   is_nixos: {{ if stat "/etc/NIXOS" }}true{{ else }}false{{ end }}
+  # Tailnet DNS name (e.g. example.ts.net), asked once on macOS and kept in the
+  # local chezmoi config so it stays out of this public repo.
+  tailnet: {{ if eq .chezmoi.os "darwin" }}{{ promptStringOnce . "tailnet" "Tailnet DNS name (e.g. example.ts.net)" | quote }}{{ else }}""{{ end }}
   name: "Benjamin Wood"
   email: "benjaminwood@gmail.com"

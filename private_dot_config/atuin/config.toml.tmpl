@@ -7,9 +7,16 @@
 {{-   $atuinHost = "host.docker.internal" -}}
 {{- end }}
 sync_address = "http://{{ $atuinHost }}:8888"
+{{- else if .is_nixos }}
+{{- /* eldar-os runs the server; its VM (hostname eldar) reaches it at the host's VM address */}}
+sync_address = "http://{{ if eq .chezmoi.hostname "eldar" }}10.42.0.1{{ else }}127.0.0.1{{ end }}:8888"
 {{- end }}
 {{- if .is_macos }}
+{{- if .tailnet }}
+sync_address = "https://atuin.{{ .tailnet }}"
+{{- else }}
 sync_address = "http://desktop:8888"
+{{- end }}
 enter_accept = true
 
 [sync]
