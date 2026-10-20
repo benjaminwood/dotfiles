@@ -92,6 +92,8 @@ focus_pane_left = ["prefix+j", "shift+left"]
 focus_pane_down = ["prefix+k", "shift+down"]
 focus_pane_up = ["prefix+l", "shift+up"]
 focus_pane_right = ["prefix+semicolon", "shift+right"]
+# prefix+o is annotate.open (below).
+open_notification_target = "prefix+i"
 previous_tab = ["prefix+p", "alt+shift+left"]
 next_tab = ["prefix+n", "alt+shift+right"]
 navigate_pane_left = "j"
@@ -170,6 +172,68 @@ navigate_pane_right = "semicolon"
 # command = "lazygit"
 # width = "80%"
 # height = "80%"
+
+# herdr-annotate (github.com/plannotator/herdr-annotate). Bindings to a plugin
+# that isn't installed do nothing.
+[[keys.command]]
+key = "prefix+a"
+type = "plugin_action"
+command = "annotate.capture"
+description = "annotate text"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "annotate.copy-context"
+description = "copy annotations as context"
+
+[[keys.command]]
+key = "prefix+ctrl+a"
+type = "plugin_action"
+command = "annotate.copy-archive"
+description = "copy annotations as context and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+v"
+type = "plugin_action"
+command = "annotate.paste-archive"
+description = "paste annotations into the agent's prompt and archive them"
+
+[[keys.command]]
+key = "prefix+ctrl+s"
+type = "plugin_action"
+command = "annotate.send-archive"
+description = "send annotations to the agent and archive them"
+
+[[keys.command]]
+key = "prefix+m"
+type = "plugin_action"
+command = "annotate.manage"
+description = "manage annotations"
+
+[[keys.command]]
+key = "prefix+o"
+type = "plugin_action"
+command = "annotate.open"
+description = "review documents in this folder"
+
+[[keys.command]]
+key = "prefix+shift+o"
+type = "plugin_action"
+command = "annotate.last"
+description = "review the agent's last reply"
+
+[[keys.command]]
+key = "prefix+ctrl+o"
+type = "plugin_action"
+command = "annotate.last-newest"
+description = "review the agent's newest reply"
+
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "annotate.terminal"
+description = "review this pane's recent output"
 
 # Legacy indexed shortcut config is still parsed for compatibility.
 # Prefer switch_tab, switch_workspace, and focus_agent for new configs.
