@@ -1,0 +1,8 @@
+# plannotator-tui, the review pane herdr-annotate opens.
+
+# Home-row movement, as in herdr: jkl; instead of hjkl. Arrows still work.
+[keys]
+left = ["j", "Left"]
+down = ["k", "Down"]
+up = ["l", "Up"]
+right = [";", "Right"]
