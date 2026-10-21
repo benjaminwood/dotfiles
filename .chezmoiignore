@@ -26,6 +26,12 @@ README.md
 CLAUDE.md
 {{- end }}
 
+{{- if not .is_nixos }}
+# [keys] needs plannotator-tui#104, which only eldar-os builds so far; an older
+# plannotator-tui rejects the file.
+.config/plannotator-tui
+{{- end }}
+
 {{- if not .is_linux_desktop }}
 .xprofile
 .Xresources
