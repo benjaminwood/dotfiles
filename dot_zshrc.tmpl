@@ -22,8 +22,11 @@ alias claude="claude --allow-dangerously-skip-permissions"
 {{- end }}
 {{- if and .is_nixos (eq .chezmoi.hostname "eldar") }}
 # Eldar's VM: start without permission prompts. The supervisor, outside the
-# VM, is what gates anything that needs a credential.
-alias claude="claude --dangerously-skip-permissions"
+# VM, is what gates anything that needs a credential. Not in a shell with its
+# own Claude config (CLAUDE_CONFIG_DIR): that's a deliberately limited agent.
+if [[ -z $CLAUDE_CONFIG_DIR ]]; then
+  alias claude="claude --dangerously-skip-permissions"
+fi
 {{- end }}
 
 function docker.set_ruby_version {
