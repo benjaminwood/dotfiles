@@ -1,0 +1,22 @@
+{
+  "Profiles": [
+    {
+      "Name": "Visor: eldar",
+      "Guid": "visor-eldar",
+      "Dynamic Profile Parent Name": "Hotkey Window",
+      "Has Hotkey": false,
+      "Window Type": 0,
+      "Custom Command": "Yes",
+      "Command": "{{ .chezmoi.homeDir }}/.local/bin/ssh-loop eldar"
+    },
+    {
+      "Name": "Visor: eldar-os",
+      "Guid": "visor-eldar-os",
+      "Dynamic Profile Parent Name": "Hotkey Window",
+      "Has Hotkey": false,
+      "Window Type": 0,
+      "Custom Command": "Yes",
+      "Command": "{{ .chezmoi.homeDir }}/.local/bin/ssh-loop eldar-os"
+    }
+  ]
+}

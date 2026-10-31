@@ -1,0 +1,27 @@
+#!/bin/zsh
+# Run `ssh "$@"` forever, reconnecting when the connection drops.
+# Used by the iTerm visor tabs. Ctrl-C while waiting to reconnect quits.
+#   ssh-loop eldar
+#   ssh-loop eldar-os
+
+if (( $# == 0 )); then
+  print -u2 "usage: ssh-loop <ssh args...>"
+  exit 2
+fi
+
+delay=1
+max_delay=10
+
+while true; do
+  started=$SECONDS
+  ssh "$@"
+  code=$?
+
+  # A session that stayed up for a while resets the backoff.
+  (( SECONDS - started > 30 )) && delay=1
+
+  print -P "\n%F{yellow}ssh $* exited ($code). Reconnecting in ${delay}s… (Ctrl-C to stop)%f"
+  # Ctrl-C during sleep ends the loop; zsh exits on SIGINT here.
+  sleep $delay || exit 130
+  (( delay = delay * 2 > max_delay ? max_delay : delay * 2 ))
+done

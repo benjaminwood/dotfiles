@@ -6,6 +6,10 @@
 .hammerspoon
 .config/zed
 .config/zsh
+# iTerm2: settings, visor profiles/scripts, and the ssh-loop they run
+Documents
+Library
+.local/bin/ssh-loop
 {{- end }}
 
 {{- if eq .chezmoi.os "darwin" }}

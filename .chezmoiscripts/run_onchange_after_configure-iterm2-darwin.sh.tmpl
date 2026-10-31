@@ -1,0 +1,9 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# iTerm2 loads its settings from ~/Documents/com.googlecode.iterm2.plist
+# (managed by chezmoi). Takes effect the next time iTerm2 starts.
+defaults write com.googlecode.iterm2 PrefsCustomFolder -string "$HOME/Documents"
+defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+{{- end }}

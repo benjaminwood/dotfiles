@@ -52,6 +52,8 @@ docker rm -f dotfiles-test
 - Never commit secrets or employer-internal details (this repo is public). On macOS, `~/.cf2_secrets`, `~/bin`, the global `~/.gitignore`, and `~/.config/zsh/functions/rails-console.zsh` stay local; `.zshrc` sources any `*.zsh` in that functions dir so local-only files still load
 - `dot_tmux.conf.tmpl` is fetched raw from GitHub by a local `kpod` helper that strips `{{` lines, so keep platform-specific content out of it
 - Karabiner (and other apps) rewrite their own config files; after changing settings in the app, run `chezmoi re-add` to pull them back into the repo
+- iTerm2 loads settings from `~/Documents/com.googlecode.iterm2.plist` (custom prefs folder, set by `run_onchange_after_configure-iterm2-darwin.sh.tmpl`) and rewrites it on save; `chezmoi re-add` it after changing settings. iTerm also saves the dynamic "Visor:" profiles into that plist; drop them from the repo copy, since they come from `DynamicProfiles/visor.json`. iTerm2 itself isn't in the Brewfile (installed outside Homebrew)
+- The iTerm visor runs `~/.local/bin/ssh-loop` (not `~/bin`, which stays local on macOS); the herdr host aliases it connects to (`eldar`, `eldar-os`) live in the local `~/.ssh/config`
 - macOS `brew bundle` runs with `--no-upgrade` so applying never upgrades existing packages
 - `run_once_` scripts use chezmoi's state DB to track execution. Delete `~/.config/chezmoi/chezmoistate.boltdb` to re-run them
 - The atuin install script (`run_once_install-atuin.sh.tmpl`) downloads arch-specific binaries to `/usr/local/bin/`, not `~/.atuin/bin/`
