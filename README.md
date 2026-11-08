@@ -38,7 +38,6 @@ bash /tmp/dotfiles/install.sh
 | AeroSpace | yes | - | Tiling window manager |
 | Karabiner | yes | - | Keyboard customization |
 | Hammerspoon | yes | - | Dock/lock automation |
-| Zed | yes | - | Settings + keymap |
 | Helix | yes | yes | jkl; movement layout |
 | zsh functions | yes | - | `gwt` git worktree helper in `~/.config/zsh/functions` |
 | i3 / i3status | - | linux desktop | Tiling WM for X11 |

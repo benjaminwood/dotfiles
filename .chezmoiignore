@@ -4,7 +4,6 @@
 .zprofile
 .vsvimrc
 .hammerspoon
-.config/zed
 .config/zsh
 # iTerm2: settings, visor profiles/scripts, and the ssh-loop they run
 Documents
