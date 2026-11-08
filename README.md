@@ -32,9 +32,9 @@ bash /tmp/dotfiles/install.sh
 | zsh + oh-my-zsh | yes | yes | Default shell, Powerlevel10k theme |
 | tmux | yes | yes | Nord theme, TPM plugins |
 | fzf | yes | yes | Fuzzy finder, ctrl+r history |
-| atuin | - | yes | Shell history sync, activated via `inith` |
+| atuin | yes | yes | Shell history sync; macOS installs it, Docker activates via `inith` |
 | git config | yes | yes | Templated for name/email |
-| Claude Code | - | yes | Auto-installed in containers |
+| Claude Code | yes | yes | Installed by the run_once script |
 | AeroSpace | yes | - | Tiling window manager |
 | Karabiner | yes | - | Keyboard customization |
 | Hammerspoon | yes | - | Dock/lock automation |
@@ -43,7 +43,8 @@ bash /tmp/dotfiles/install.sh
 | zsh functions | yes | - | `gwt` git worktree helper in `~/.config/zsh/functions` |
 | i3 / i3status | - | linux desktop | Tiling WM for X11 |
 | alacritty / termite | - | linux desktop | Terminal emulators |
-| kubectl, helm, kubectx | brew | on-demand | `install-kube-tools` in Docker |
+| kubectl, helm, kubectx | - | on-demand | `install-kube-tools` in Docker |
+| macOS settings | yes | - | Dark mode, Dock, Finder, keyboard, shortcuts, login items |
 
 ## Environment detection
 
@@ -77,7 +78,6 @@ inith <password> <key> <hostname>
 
 This logs into atuin, appends the activation to `~/.zshrc`, and enables ctrl+r history search. The sync address is auto-detected at `chezmoi apply` time (probes `host.docker.internal`, falls back to gateway IP).
 
-On macOS, `scripts/setup-atuin-tunnel.sh` creates a persistent SSH tunnel to forward port 8888 from the atuin server.
 
 ### Kubernetes tools
 

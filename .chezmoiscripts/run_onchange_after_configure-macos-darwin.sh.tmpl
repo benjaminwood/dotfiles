@@ -1,0 +1,56 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# macOS preferences. Re-runs whenever this file changes.
+
+echo "Applying macOS settings..."
+
+# Appearance and input
+defaults write -g AppleInterfaceStyle -string Dark
+defaults write -g com.apple.swipescrolldirection -bool false   # natural scrolling off
+defaults write -g com.apple.keyboard.fnState -bool true        # F1-F12 as function keys
+
+# Dock: auto-hide, no recent apps
+defaults write com.apple.dock autohide -bool true
+defaults write com.apple.dock show-recents -bool false
+
+# Finder: list view
+defaults write com.apple.finder FXPreferredViewStyle -string Nlsv
+
+# Clicking the wallpaper doesn't hide windows to show the desktop
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+# Turn off system shortcuts that other apps take over:
+#   28/30: ⇧⌘3 / ⇧⌘4 screenshots (Shottr)
+#   60/61: ⌃Space / ⌃⌥Space input source switching
+#   64:    ⌘Space Spotlight (Tinycast)
+disable_hotkey() {
+  defaults write com.apple.symbolichotkeys AppleSymbolicHotKeys -dict-add "$1" \
+    "<dict><key>enabled</key><false/><key>value</key><dict><key>parameters</key><array><integer>$2</integer><integer>$3</integer><integer>$4</integer></array><key>type</key><string>standard</string></dict></dict>"
+}
+disable_hotkey 28 51 20 1179648
+disable_hotkey 30 52 21 1179648
+disable_hotkey 60 32 49 262144
+disable_hotkey 61 32 49 786432
+disable_hotkey 64 32 49 1048576
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u 2>/dev/null || true
+
+killall Dock Finder SystemUIServer 2>/dev/null || true
+
+# Login items. The first run asks to let your terminal control System Events.
+echo "Adding login items..."
+for app in Tinycast Hammerspoon AeroSpace Shottr "Hidden Bar" OpenSuperWhisper; do
+  path="/Applications/$app.app"
+  [ -d "$path" ] || { echo "  skipping $app (not installed)"; continue; }
+  osascript - "$app" "$path" <<'OSA' || echo "  couldn't add $app (allow System Events access, then re-run)" >&2
+on run {appName, appPath}
+  tell application "System Events"
+    if not (exists login item appName) then make login item at end with properties {path:appPath, hidden:false}
+  end tell
+end run
+OSA
+done
+
+echo "Some settings take effect after logging out and back in."
+{{- end }}

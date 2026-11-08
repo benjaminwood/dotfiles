@@ -1,4 +1,4 @@
-{{- if .is_docker -}}
+{{- if or .is_docker .is_macos -}}
 #!/usr/bin/env bash
 set -euo pipefail
 

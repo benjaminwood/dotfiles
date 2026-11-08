@@ -4,6 +4,22 @@ set -euo pipefail
 
 # Brewfile hash: {{ include "Brewfile" | sha256sum }}
 
+# AeroSpace only ships from its own tap, and Homebrew refuses casks from
+# third-party taps until they're trusted. Trust that one cask, not the tap.
+brew tap nikitabobko/tap
+brew trust --cask nikitabobko/tap/aerospace
+
 echo "Installing Homebrew packages..."
-brew bundle --no-upgrade --file={{ joinPath .chezmoi.sourceDir "Brewfile" }}
+# A cask whose app was installed outside Homebrew fails with "already an App
+# at ...". bundle still installs everything else, so report and carry on.
+if ! brew bundle --no-upgrade --file={{ joinPath .chezmoi.sourceDir "Brewfile" }}; then
+  echo "Warning: some Brewfile entries failed (see above); the rest were installed." >&2
+fi
+
+# atuin from its own installer, which is where .zshrc expects it
+# (~/.atuin/bin). --no-modify-path: .zshrc already sets it up.
+if [ ! -x "$HOME/.atuin/bin/atuin" ]; then
+  echo "Installing atuin..."
+  curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh | sh -s -- --no-modify-path
+fi
 {{- end }}
