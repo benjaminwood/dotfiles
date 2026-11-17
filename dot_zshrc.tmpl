@@ -100,8 +100,10 @@ inith() {
 {{- end }}
 {{- if .is_macos }}
 
-. "$HOME/.atuin/bin/env"
-export ATUIN_HOST_NAME=ben-cf-mbp
+# The atuin installer runs with --no-modify-path, so it writes no
+# ~/.atuin/bin/env to source; add its bin dir directly.
+export PATH="$HOME/.atuin/bin:$PATH"
+export ATUIN_HOST_NAME=ben-mbp
 export ATUIN_HOST_USER=ben
 eval "$(atuin init zsh --disable-up-arrow)"
 
