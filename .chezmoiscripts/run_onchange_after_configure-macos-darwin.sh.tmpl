@@ -40,7 +40,7 @@ killall Dock Finder SystemUIServer 2>/dev/null || true
 
 # Login items. The first run asks to let your terminal control System Events.
 echo "Adding login items..."
-for app in Tinycast Hammerspoon AeroSpace Shottr "Hidden Bar" OpenSuperWhisper; do
+for app in Tinycast Hammerspoon AeroSpace Shottr OpenSuperWhisper; do
   path="/Applications/$app.app"
   [ -d "$path" ] || { echo "  skipping $app (not installed)"; continue; }
   osascript - "$app" "$path" <<'OSA' || echo "  couldn't add $app (allow System Events access, then re-run)" >&2
